@@ -131,5 +131,5 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
 +			status = "disabled";
 +		};
  	};
- 
+
  	timer {

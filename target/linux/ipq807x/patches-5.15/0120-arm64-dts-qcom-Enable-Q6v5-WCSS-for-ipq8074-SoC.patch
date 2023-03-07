@@ -19,7 +19,7 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
 @@ -140,6 +140,32 @@
  		};
  	};
- 
+
 +	wcss: smp2p-wcss {
 +		compatible = "qcom,smp2p";
 +		qcom,smem = <435>, <428>;
@@ -49,10 +49,10 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
  	soc: soc {
  		#address-cells = <0x1>;
  		#size-cells = <0x1>;
-@@ -409,6 +435,11 @@
+@@ -416,6 +442,11 @@
  			#hwlock-cells = <1>;
  		};
- 
+
 +		tcsr_q6: syscon@1945000 {
 +			compatible = "syscon";
 +			reg = <0x01945000 0xe000>;
@@ -116,5 +116,5 @@ Signed-off-by: Robert Marko <robimarko@gmail.com>
 +			};
 +		};
  	};
- 
+
  	timer {
