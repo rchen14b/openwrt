@@ -93,9 +93,11 @@
 			default-state = "keep";
 		};
 	};
+
 };
 
 &tlmm {
+
 	mdio_pins: mdio-pins {
 		mdc {
 			pins = "gpio68";
@@ -110,6 +112,7 @@
 			drive-strength = <8>;
 			bias-pull-up;
 		};
+	
 	};
 
 	i2c_pins: i2c-pins {
@@ -120,6 +123,7 @@
 	};
 };
 
+
 &blsp1_uart5 {
 	status = "okay";
 };
@@ -129,7 +133,38 @@
 
 	pinctrl-0 = <&i2c_pins>;
 	pinctrl-names = "default";
+
+	emc2301@2f {
+		compatible = "smsc,emc2301", "emc2301";
+		reg = <0x2f>;
+		model_name = "emc2301";
+		#address-cells = <1>;
+		#size-cells = <0>;
+			emc2305_fan@0 {
+				reg = <0>;
+				name = "emc2305_fan";
+				pwm-output-mode = <1>;
+				pwm-channel = <5>;
+				pwm-max = <255>;
+				pwm-min = <0>;
+				cooling-levels = <10>;
+                        };
+	};
 };
+
+//&blsp1_i2c2 {
+//	status = "okay";
+//
+//	pinctrl-0 = <&i2c_0_pins>;
+//	pinctrl-names = "default";
+//
+//	lm63@4C {
+//		compatible = "ti,lm63";
+//		reg = <0x4c>;
+//		#address-cells = <0x01>;
+//		#size-cells = <0x00>;
+//	};
+//};
 
 &prng {
 	status = "okay";
