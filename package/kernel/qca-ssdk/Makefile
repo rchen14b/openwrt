@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=qca-ssdk
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE_URL:=https://git.codelinaro.org/clo/qsdk/oss/lklm/qca-ssdk.git
 PKG_SOURCE_PROTO:=git
@@ -42,6 +42,8 @@ else
 TOOLCHAIN_BIN_PATH=$(TOOLCHAIN_DIR)/bin
 endif
 
+LNX_CONFIG_OPTS = LNX_MAKEOPTS='$(KERNEL_MAKEOPTS)' MODULE_TYPE=KSLIB modules
+
 MAKE_FLAGS+= \
 	TARGET_NAME=$(CONFIG_TARGET_NAME) \
 	TOOL_PATH=$(TOOLCHAIN_BIN_PATH) \
@@ -51,8 +53,8 @@ MAKE_FLAGS+= \
 	ARCH=$(LINUX_KARCH) \
 	TARGET_SUFFIX=$(CONFIG_TARGET_SUFFIX) \
 	GCC_VERSION=$(GCC_VERSION) \
-	EXTRA_CFLAGS='-fno-PIC -fno-stack-protector -I$(STAGING_DIR)/usr/include' \
-	$(KERNEL_MAKE_FLAGS)
+	EXTRA_CFLAGS=-fno-stack-protector -I$(STAGING_DIR)/usr/include \
+	$(LNX_CONFIG_OPTS)
 
 ifeq ($(CONFIG_TARGET_BOARD), "ipq807x")
     MAKE_FLAGS+= CHIP_TYPE=HPPE PTP_FEATURE=disable SWCONFIG_FEATURE=disable
