@@ -1,0 +1,19 @@
+--- a/include/net/sch_generic.h	2023-06-21 15:01:03.000000000 +0100
++++ b/include/net/sch_generic.h	2023-06-21 15:01:03.000000000 +0100
+@@ -94,6 +94,7 @@
+ #define TCQ_F_INVISIBLE		0x80 /* invisible by default in dump */
+ #define TCQ_F_NOLOCK		0x100 /* qdisc does not require locking */
+ #define TCQ_F_OFFLOADED		0x200 /* qdisc is offloaded to HW */
++#define TCQ_F_NSS               0x1000 /* NSS qdisc flag. */
+ 	u32			limit;
+ 	const struct Qdisc_ops	*ops;
+ 	struct qdisc_size_table	__rcu *stab;
+@@ -1305,4 +1306,8 @@
+ 		msleep(1);
+ }
+ 
++/* QCA NSS Qdisc Support - Start */
++void tcf_destroy_chain(struct tcf_proto __rcu **fl);
++/* QCA NSS Qdisc Support - End */
++
+ #endif
