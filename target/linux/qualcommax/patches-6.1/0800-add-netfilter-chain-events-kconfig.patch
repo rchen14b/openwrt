@@ -1,0 +1,17 @@
+--- a/net/netfilter/Kconfig	2023-07-06 10:55:47.418074025 +0100
++++ b/net/netfilter/Kconfig	2023-07-06 10:55:47.418074025 +0100
+@@ -178,6 +178,14 @@
+ 	  This option enables support for connection tracking extension
+ 	  for dscp remark.
+ 
++config NF_CONNTRACK_CHAIN_EVENTS
++       bool "Register multiple callbacks to ct events"
++	default y
++       depends on NF_CONNTRACK_EVENTS
++       help
++         Support multiple registrations.
++
++         If unsure, say `N'.
+ config NF_CONNTRACK_TIMESTAMP
+ 	bool  'Connection tracking timestamping'
+ 	depends on NETFILTER_ADVANCED
