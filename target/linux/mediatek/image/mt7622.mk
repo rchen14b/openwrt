@@ -37,33 +37,6 @@ define Build/bl31-uboot
 	cat $(STAGING_DIR_IMAGE)/mt7622_$1-u-boot.fip >> $@
 endef
 
-# Append header to a D-Link M32/R32 Kernel 1 partition
-define Build/m32-r32-recovery-header-kernel1
-	$(eval header_start=$(word 1,$(1)))
-# create $@.header without the checksum
-	echo -en "$(header_start)\x00\x00" > "$@.header"
-# Calculate checksum over data area ($@) and append it to the header.
-# The checksum is the 2byte-sum over the whole data area.
-# Every overflow during the checksum calculation must increment the current checksum value by 1.
-	od -v -w2 -tu2 -An --endian little "$@" | awk '{ s+=$$1; } END { s%=65535; printf "%c%c",s%256,s/256; }' >> "$@.header"
-	echo -en "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x8D\x57\x30\x0B" >> "$@.header"
-# Byte 0-3: Erase Start 0x002C0000
-# Byte 4-7: Erase Length 0x02D00000
-# Byte 8-11: Data offset: 0x002C0000
-# Byte 12-15: Data Length: 0x02D00000
-	echo -en "\x00\x00\x2C\x00\x00\x00\xD0\x02\x00\x00\x2C\x00\x00\x00\xD0\x02" >> "$@.header"
-# Only zeros
-	echo -en "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00" >> "$@.header"
-# Last 16 bytes, but without checksum
-	echo -en "\x42\x48\x02\x00\x00\x00\x08\x00\x00\x00\x00\x00\x60\x6E" >> "$@.header"
-# Calculate and append checksum: The checksum must be set so that the 2byte-sum of the whole header is 0.
-# Every overflow during the checksum calculation must increment the current checksum value by 1.
-	od -v -w2 -tu2 -An --endian little "$@.header" | awk '{s+=65535-$$1;}END{s%=65535;printf "%c%c",s%256,s/256;}' >> "$@.header"
-	cat "$@.header" "$@" > "$@.new"
-	mv "$@.new" "$@"
-	rm "$@.header"
-endef
-
 define Build/mt7622-gpt
 	cp $@ $@.tmp 2>/dev/null || true
 	ptgen -g -o $@.tmp -a 1 -l 1024 \
@@ -115,9 +88,7 @@ define Device/bananapi_bpi-r64
 				   pad-to 46080k | append-image squashfs-sysupgrade.itb | check-size |\
 				) \
 				  gzip
-ifeq ($(DUMP),)
   IMAGE_SIZE := $$(shell expr 45 + $$(CONFIG_TARGET_ROOTFS_PARTSIZE))m
-endif
   KERNEL			:= kernel-bin | gzip
   KERNEL_INITRAMFS		:= kernel-bin | lzma | fit lzma $$(DTS_DIR)/$$(DEVICE_DTS).dtb with-initrd | pad-to 128k
   IMAGE/sysupgrade.itb		:= append-kernel | fit gzip $$(DTS_DIR)/$$(DEVICE_DTS).dtb external-static-with-rootfs | append-metadata
@@ -176,6 +147,7 @@ define Device/buffalo_wsr-3200ax4s
 endef
 TARGET_DEVICES += buffalo_wsr-3200ax4s
 
+<<<<<<< HEAD
 define Device/dlink_eagle-pro-ai-ax3200-a1
   IMAGE_SIZE := 46080k
   DEVICE_VENDOR := D-Link
@@ -207,6 +179,8 @@ define Device/dlink_eagle-pro-ai-r32-a1
 endef
 TARGET_DEVICES += dlink_eagle-pro-ai-r32-a1
 
+=======
+>>>>>>> 17804b9f09 (Revert "Merge pull request #65 from rmandrad/main")
 define Device/elecom_wrc-2533gent
   DEVICE_VENDOR := Elecom
   DEVICE_MODEL := WRC-2533GENT
