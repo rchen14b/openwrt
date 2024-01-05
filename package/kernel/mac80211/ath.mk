@@ -313,7 +313,7 @@ define KernelPackage/ath11k
   $(PKG_BUILD_DIR)/drivers/net/wireless/ath/ath11k/ath11k.ko
 ifdef CONFIG_ATH11K_NSS_SUPPORT
   AUTOLOAD:=$(call AutoProbe,ath11k)
-  MODPARAMS.ath11k:=nss_offload=1 frame_mode=2
+  MODPARAMS.ath11k:=cold_boot_cal=false enable_smart_antenna=1 frame_mode=2 nss_offload=1 color_collision_detect=1 debug_mask="0x00000000"
 endif
 endef
 
