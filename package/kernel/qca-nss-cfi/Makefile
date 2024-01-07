@@ -64,6 +64,7 @@ endef
 
 EXTRA_CFLAGS+= \
 	-DCONFIG_NSS_DEBUG_LEVEL=4 \
+	-DNSS_CFI_DEBUG_LVL_TRACE=4 \
 	-I$(LINUX_DIR)/crypto/ocf \
 	-I$(STAGING_DIR)/usr/include/qca-nss-crypto \
 	-I$(STAGING_DIR)/usr/include/crypto \
