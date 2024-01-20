@@ -19,7 +19,8 @@ define KernelPackage/emc2305
   TITLE:=emc2305
   DEPENDS:=+kmod-i2c-core +kmod-hwmon-core +kmod-regmap-i2c
   FILES:=$(PKG_BUILD_DIR)/emc2305.ko
-  AUTOLOAD:=$(call AutoLoad,30,emc2305,1)
+  AUTOLOAD:=$(call AutoProbe,emc2305)
+  $(call AddDepends/hwmon,+kmod-i2c-core +PACKAGE_kmod-thermal:kmod-thermal +kmod-regmap-i2c)
   KCONFIG:=
 endef
 
