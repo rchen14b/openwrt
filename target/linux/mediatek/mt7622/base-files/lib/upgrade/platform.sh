@@ -34,6 +34,7 @@ platform_do_upgrade() {
 			nand_do_upgrade "$1"
 		fi
 		;;
+	dlink,eagle-pro-ai-r32-a1|\
 	elecom,wrc-x3200gst3|\
 	mediatek,mt7622-rfb1-ubi|\
 	netgear,wax206|\

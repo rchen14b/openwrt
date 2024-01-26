@@ -147,6 +147,37 @@ define Device/buffalo_wsr-3200ax4s
 endef
 TARGET_DEVICES += buffalo_wsr-3200ax4s
 
+define Device/dlink_eagle-pro-ai-ax3200-a1
+  IMAGE_SIZE := 46080k
+  DEVICE_VENDOR := D-Link
+  DEVICE_VARIANT := A1
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915-firmware
+  KERNEL_SIZE := 8192k
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  UBINIZE_OPTS := -E 5
+  IMAGES += tftp.bin recovery.bin
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  IMAGE/tftp.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | check-size
+endef
+
+define Device/dlink_eagle-pro-ai-m32-a1
+  $(Device/dlink_eagle-pro-ai-ax3200-a1)
+  DEVICE_MODEL := EAGLE PRO AI M32
+  DEVICE_DTS := mt7622-dlink-eagle-pro-ai-m32-a1
+  IMAGE/recovery.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | pad-to $$(IMAGE_SIZE) | m32-r32-recovery-header-kernel1 DLK6E6010001
+endef
+TARGET_DEVICES += dlink_eagle-pro-ai-m32-a1
+
+define Device/dlink_eagle-pro-ai-r32-a1
+  $(Device/dlink_eagle-pro-ai-ax3200-a1)
+  DEVICE_MODEL := EAGLE PRO AI R32
+  DEVICE_DTS := mt7622-dlink-eagle-pro-ai-r32-a1
+  IMAGE/recovery.bin := append-kernel | pad-to $$(KERNEL_SIZE) | append-ubi | pad-to $$(IMAGE_SIZE) | m32-r32-recovery-header-kernel1 DLK6E6015001
+endef
+TARGET_DEVICES += dlink_eagle-pro-ai-r32-a1
+
 define Device/elecom_wrc-2533gent
   DEVICE_VENDOR := Elecom
   DEVICE_MODEL := WRC-2533GENT
